@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1519px;
+            height: 837px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/AreasofInterferenceSoilEnergySystems_3.js"></script>
+        <script src="data/solar_park_4.js"></script>
+        <script src="data/wind_turbines_5.js"></script>
+        <script src="data/Groningen_6.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[52.45902159688702,5.525573606352434],[53.72137830703607,9.21266613088064]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        map.createPane('pane_GoogleSatellite_1');
+        map.getPane('pane_GoogleSatellite_1').style.zIndex = 401;
+        var layer_GoogleSatellite_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_GoogleSatellite_1;
+        map.addLayer(layer_GoogleSatellite_1);
+        map.createPane('pane_GoogleMaps_2');
+        map.getPane('pane_GoogleMaps_2').style.zIndex = 402;
+        var layer_GoogleMaps_2 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMaps_2',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_GoogleMaps_2;
+        map.addLayer(layer_GoogleMaps_2);
+        function pop_AreasofInterferenceSoilEnergySystems_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Naam</th>\
+                        <td>' + (feature.properties['Naam'] !== null ? autolinker.link(feature.properties['Naam'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Vastgestel</th>\
+                        <td>' + (feature.properties['Vastgestel'] !== null ? autolinker.link(feature.properties['Vastgestel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Naam_bestu</th>\
+                        <td>' + (feature.properties['Naam_bestu'] !== null ? autolinker.link(feature.properties['Naam_bestu'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Vaststelli</th>\
+                        <td>' + (feature.properties['Vaststelli'] !== null ? autolinker.link(feature.properties['Vaststelli'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SHAPE.STAr</th>\
+                        <td>' + (feature.properties['SHAPE.STAr'] !== null ? autolinker.link(feature.properties['SHAPE.STAr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE.STLe'] !== null ? autolinker.link(feature.properties['SHAPE.STLe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_AreasofInterferenceSoilEnergySystems_3_0(feature) {
+            switch(String(feature.properties['Naam'])) {
+                case 'Binnenstad':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,168,46,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'De Suikerzijde':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,99,80,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Ebbingekwartier':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(46,216,154,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Eemskanaalzone':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,224,136,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Europapark':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(176,104,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Martiniziekenhuis':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(97,188,202,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Reitdiep':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,81,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Stationsgebied':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(199,212,113,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'UMCG':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(92,134,212,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Westpoort':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,56,197,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Zernike':
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(92,71,232,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,205,75,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_AreasofInterferenceSoilEnergySystems_3');
+        map.getPane('pane_AreasofInterferenceSoilEnergySystems_3').style.zIndex = 403;
+        map.getPane('pane_AreasofInterferenceSoilEnergySystems_3').style['mix-blend-mode'] = 'normal';
+        var layer_AreasofInterferenceSoilEnergySystems_3 = new L.geoJson(json_AreasofInterferenceSoilEnergySystems_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_AreasofInterferenceSoilEnergySystems_3',
+            layerName: 'layer_AreasofInterferenceSoilEnergySystems_3',
+            pane: 'pane_AreasofInterferenceSoilEnergySystems_3',
+            onEachFeature: pop_AreasofInterferenceSoilEnergySystems_3,
+            style: style_AreasofInterferenceSoilEnergySystems_3_0,
+        });
+        bounds_group.addLayer(layer_AreasofInterferenceSoilEnergySystems_3);
+        map.addLayer(layer_AreasofInterferenceSoilEnergySystems_3);
+        function pop_solar_park_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['data_bron'] !== null ? autolinker.link(feature.properties['data_bron'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">gemeente</th>\
+                        <td>' + (feature.properties['gemeente'] !== null ? autolinker.link(feature.properties['gemeente'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">naam_park</th>\
+                        <td>' + (feature.properties['naam_park'] !== null ? autolinker.link(feature.properties['naam_park'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">status</th>\
+                        <td>' + (feature.properties['status'] !== null ? autolinker.link(feature.properties['status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">initiatief</th>\
+                        <td>' + (feature.properties['initiatief'] !== null ? autolinker.link(feature.properties['initiatief'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakt</th>\
+                        <td>' + (feature.properties['oppervlakt'] !== null ? autolinker.link(feature.properties['oppervlakt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vermogen_M</th>\
+                        <td>' + (feature.properties['vermogen_M'] !== null ? autolinker.link(feature.properties['vermogen_M'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['opp_calc_h'] !== null ? autolinker.link(feature.properties['opp_calc_h'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape.STAr'] !== null ? autolinker.link(feature.properties['Shape.STAr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape.STLe'] !== null ? autolinker.link(feature.properties['Shape.STLe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_solar_park_4_0(feature) {
+            if (feature.properties['vermogen_M'] >= 0.100000 && feature.properties['vermogen_M'] <= 22.228571 ) {
+                return {
+                pane: 'pane_solar_park_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(43,131,186,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['vermogen_M'] >= 22.228571 && feature.properties['vermogen_M'] <= 44.357143 ) {
+                return {
+                pane: 'pane_solar_park_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,191,171,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['vermogen_M'] >= 44.357143 && feature.properties['vermogen_M'] <= 66.485714 ) {
+                return {
+                pane: 'pane_solar_park_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(199,232,173,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['vermogen_M'] >= 66.485714 && feature.properties['vermogen_M'] <= 88.614286 ) {
+                return {
+                pane: 'pane_solar_park_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,191,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['vermogen_M'] >= 88.614286 && feature.properties['vermogen_M'] <= 110.742857 ) {
+                return {
+                pane: 'pane_solar_park_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,201,128,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['vermogen_M'] >= 110.742857 && feature.properties['vermogen_M'] <= 132.871429 ) {
+                return {
+                pane: 'pane_solar_park_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,124,74,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['vermogen_M'] >= 132.871429 && feature.properties['vermogen_M'] <= 155.000000 ) {
+                return {
+                pane: 'pane_solar_park_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,25,28,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_solar_park_4');
+        map.getPane('pane_solar_park_4').style.zIndex = 404;
+        map.getPane('pane_solar_park_4').style['mix-blend-mode'] = 'normal';
+        var layer_solar_park_4 = new L.geoJson(json_solar_park_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_solar_park_4',
+            layerName: 'layer_solar_park_4',
+            pane: 'pane_solar_park_4',
+            onEachFeature: pop_solar_park_4,
+            style: style_solar_park_4_0,
+        });
+        bounds_group.addLayer(layer_solar_park_4);
+        map.addLayer(layer_solar_park_4);
+        function pop_wind_turbines_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BGT_identi'] !== null ? autolinker.link(feature.properties['BGT_identi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BGT_status'] !== null ? autolinker.link(feature.properties['BGT_status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NaamWindpa</th>\
+                        <td>' + (feature.properties['NaamWindpa'] !== null ? autolinker.link(feature.properties['NaamWindpa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">StatusWind</th>\
+                        <td>' + (feature.properties['StatusWind'] !== null ? autolinker.link(feature.properties['StatusWind'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Gemeente</th>\
+                        <td>' + (feature.properties['Gemeente'] !== null ? autolinker.link(feature.properties['Gemeente'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BronGeomet</th>\
+                        <td>' + (feature.properties['BronGeomet'] !== null ? autolinker.link(feature.properties['BronGeomet'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NaamTurbin</th>\
+                        <td>' + (feature.properties['NaamTurbin'] !== null ? autolinker.link(feature.properties['NaamTurbin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Vermogen_k</th>\
+                        <td>' + (feature.properties['Vermogen_k'] !== null ? autolinker.link(feature.properties['Vermogen_k'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fabrikant</th>\
+                        <td>' + (feature.properties['Fabrikant'] !== null ? autolinker.link(feature.properties['Fabrikant'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Bouwjaar</th>\
+                        <td>' + (feature.properties['Bouwjaar'] !== null ? autolinker.link(feature.properties['Bouwjaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Type</th>\
+                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ashoogte</th>\
+                        <td>' + (feature.properties['Ashoogte'] !== null ? autolinker.link(feature.properties['Ashoogte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Diameter</th>\
+                        <td>' + (feature.properties['Diameter'] !== null ? autolinker.link(feature.properties['Diameter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_wind_turbines_5_0(feature) {
+            switch(String(feature.properties['Vermogen_k'])) {
+                case '2050':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(172,205,83,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2300':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,225,29,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2500':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,231,125,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3000':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(165,82,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3300':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,120,122,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3450':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(70,149,202,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3600':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,233,176,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4200':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,192,58,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4300':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,86,155,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4500':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,147,107,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4800':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(18,214,207,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '5500':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,82,208,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '6150':
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,130,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_wind_turbines_5',
+                shape: 'diamond',
+                radius: 5.999999999999998,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,17,212,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_wind_turbines_5');
+        map.getPane('pane_wind_turbines_5').style.zIndex = 405;
+        map.getPane('pane_wind_turbines_5').style['mix-blend-mode'] = 'normal';
+        var layer_wind_turbines_5 = new L.geoJson(json_wind_turbines_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_wind_turbines_5',
+            layerName: 'layer_wind_turbines_5',
+            pane: 'pane_wind_turbines_5',
+            onEachFeature: pop_wind_turbines_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_wind_turbines_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_wind_turbines_5);
+        map.addLayer(layer_wind_turbines_5);
+        function pop_Groningen_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>gml_id</strong><br />' + (feature.properties['gml_id'] !== null ? autolinker.link(feature.properties['gml_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">nationalCo</th>\
+                        <td>' + (feature.properties['nationalCo'] !== null ? autolinker.link(feature.properties['nationalCo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">localId</th>\
+                        <td>' + (feature.properties['localId'] !== null ? autolinker.link(feature.properties['localId'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">namespace</th>\
+                        <td>' + (feature.properties['namespace'] !== null ? autolinker.link(feature.properties['namespace'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LocalisedC</th>\
+                        <td>' + (feature.properties['LocalisedC'] !== null ? autolinker.link(feature.properties['LocalisedC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Country</th>\
+                        <td>' + (feature.properties['Country'] !== null ? autolinker.link(feature.properties['Country'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">language</th>\
+                        <td>' + (feature.properties['language'] !== null ? autolinker.link(feature.properties['language'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sourceOfNa</th>\
+                        <td>' + (feature.properties['sourceOfNa'] !== null ? autolinker.link(feature.properties['sourceOfNa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">pronunciat</th>\
+                        <td>' + (feature.properties['pronunciat'] !== null ? autolinker.link(feature.properties['pronunciat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">text</th>\
+                        <td>' + (feature.properties['text'] !== null ? autolinker.link(feature.properties['text'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">script</th>\
+                        <td>' + (feature.properties['script'] !== null ? autolinker.link(feature.properties['script'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">transliter</th>\
+                        <td>' + (feature.properties['transliter'] !== null ? autolinker.link(feature.properties['transliter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">residenceO</th>\
+                        <td>' + (feature.properties['residenceO'] !== null ? autolinker.link(feature.properties['residenceO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">residenc_1</th>\
+                        <td>' + (feature.properties['residenc_1'] !== null ? autolinker.link(feature.properties['residenc_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">residenc_2</th>\
+                        <td>' + (feature.properties['residenc_2'] !== null ? autolinker.link(feature.properties['residenc_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">residenc_3</th>\
+                        <td>' + (feature.properties['residenc_3'] !== null ? autolinker.link(feature.properties['residenc_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geometry</th>\
+                        <td>' + (feature.properties['geometry'] !== null ? autolinker.link(feature.properties['geometry'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beginLifes</th>\
+                        <td>' + (feature.properties['beginLifes'] !== null ? autolinker.link(feature.properties['beginLifes'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">boundary</th>\
+                        <td>' + (feature.properties['boundary'] !== null ? autolinker.link(feature.properties['boundary'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Groningen_6_0() {
+            return {
+                pane: 'pane_Groningen_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '10,5,1,5',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 3.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(183,72,75,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Groningen_6');
+        map.getPane('pane_Groningen_6').style.zIndex = 406;
+        map.getPane('pane_Groningen_6').style['mix-blend-mode'] = 'normal';
+        var layer_Groningen_6 = new L.geoJson(json_Groningen_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Groningen_6',
+            layerName: 'layer_Groningen_6',
+            pane: 'pane_Groningen_6',
+            onEachFeature: pop_Groningen_6,
+            style: style_Groningen_6_0,
+        });
+        bounds_group.addLayer(layer_Groningen_6);
+        map.addLayer(layer_Groningen_6);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Groningen_6.png" /> Groningen': layer_Groningen_6,'wind_turbines<br /><table><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_20500.png" /></td><td>2050</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_23001.png" /></td><td>2300</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_25002.png" /></td><td>2500</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_30003.png" /></td><td>3000</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_33004.png" /></td><td>3300</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_34505.png" /></td><td>3450</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_36006.png" /></td><td>3600</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_42007.png" /></td><td>4200</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_43008.png" /></td><td>4300</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_45009.png" /></td><td>4500</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_480010.png" /></td><td>4800</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_550011.png" /></td><td>5500</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_615012.png" /></td><td>6150</td></tr><tr><td style="text-align: center;"><img src="legend/wind_turbines_5_13.png" /></td><td></td></tr></table>': layer_wind_turbines_5,'solar_park<br /><table><tr><td style="text-align: center;"><img src="legend/solar_park_4_0220.png" /></td><td>0 - 22</td></tr><tr><td style="text-align: center;"><img src="legend/solar_park_4_22441.png" /></td><td>22 - 44</td></tr><tr><td style="text-align: center;"><img src="legend/solar_park_4_44662.png" /></td><td>44 - 66</td></tr><tr><td style="text-align: center;"><img src="legend/solar_park_4_66893.png" /></td><td>66 - 89</td></tr><tr><td style="text-align: center;"><img src="legend/solar_park_4_891114.png" /></td><td>89 - 111</td></tr><tr><td style="text-align: center;"><img src="legend/solar_park_4_1111335.png" /></td><td>111 - 133</td></tr><tr><td style="text-align: center;"><img src="legend/solar_park_4_1331556.png" /></td><td>133 - 155</td></tr></table>': layer_solar_park_4,'Areas of Interference Soil Energy Systems<br /><table><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Binnenstad0.png" /></td><td>Binnenstad</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_DeSuikerzijde1.png" /></td><td>De Suikerzijde</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Ebbingekwartier2.png" /></td><td>Ebbingekwartier</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Eemskanaalzone3.png" /></td><td>Eemskanaalzone</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Europapark4.png" /></td><td>Europapark</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Martiniziekenhuis5.png" /></td><td>Martiniziekenhuis</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Reitdiep6.png" /></td><td>Reitdiep</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Stationsgebied7.png" /></td><td>Stationsgebied</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_UMCG8.png" /></td><td>UMCG</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Westpoort9.png" /></td><td>Westpoort</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_Zernike10.png" /></td><td>Zernike</td></tr><tr><td style="text-align: center;"><img src="legend/AreasofInterferenceSoilEnergySystems_3_11.png" /></td><td></td></tr></table>': layer_AreasofInterferenceSoilEnergySystems_3,"Google Maps": layer_GoogleMaps_2,"Google Satellite": layer_GoogleSatellite_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
